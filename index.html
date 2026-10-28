@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Masuk — Selamat Datang</title>
+  <meta name="description" content="Halaman login dengan konsep manusia kecil yang berjalan di atas teks. Dibuat dengan HTML, CSS, dan JavaScript murni." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Latar: pendar hangat, bulan, bintang, bintang jatuh -->
+  <div class="bg-glow" aria-hidden="true"></div>
+  <div class="moon" aria-hidden="true"></div>
+  <div class="stars" id="stars" aria-hidden="true"></div>
+  <div class="shooting-star" aria-hidden="true"></div>
+
+  <main class="stage" id="stage" data-mode="walk">
+    <!-- HERO: teks raksasa + manusia berjalan di atasnya -->
+    <header class="hero">
+      <p class="kicker">✦ zona masuk ✦</p>
+      <h1 class="headline" id="headline" aria-label="Selamat Datang"><span class="headline-text" id="headlineText" aria-hidden="true"></span><span class="walker-slot" id="walkerSlot" aria-hidden="true"><svg class="walker" id="walker" viewBox="0 0 100 120" fill="none">
+            <!-- bayangan kaki -->
+            <ellipse class="w-shadow" cx="50" cy="117.5" rx="17" ry="2.6" />
+            <g class="w-lean">
+              <g class="w-body">
+                <!-- syal -->
+                <g class="w-scarf">
+                  <path d="M44 25 Q33 27 27 34" />
+                  <path d="M45 28 Q37 33 35 41" />
+                </g>
+                <!-- kepala -->
+                <circle class="w-head" cx="50" cy="13" r="9" />
+                <!-- badan -->
+                <line class="w-torso" x1="50" y1="23" x2="50" y2="64" />
+                <!-- lengan belakang -->
+                <g class="w-arm w-arm-back">
+                  <line x1="50" y1="32" x2="50" y2="60" />
+                </g>
+                <!-- kaki belakang -->
+                <g class="w-leg w-leg-back">
+                  <line class="w-thigh" x1="50" y1="64" x2="50" y2="90" />
+                  <g class="w-shin">
+                    <line x1="50" y1="90" x2="50" y2="114" />
+                    <line class="w-foot" x1="50" y1="114" x2="59" y2="114" />
+                  </g>
+                </g>
+                <!-- kaki depan -->
+                <g class="w-leg w-leg-front">
+                  <line class="w-thigh" x1="50" y1="64" x2="50" y2="90" />
+                  <g class="w-shin">
+                    <line x1="50" y1="90" x2="50" y2="114" />
+                    <line class="w-foot" x1="50" y1="114" x2="59" y2="114" />
+                  </g>
+                </g>
+                <!-- lengan depan -->
+                <g class="w-arm w-arm-front">
+                  <line x1="50" y1="32" x2="50" y2="60" />
+                </g>
+              </g>
+            </g>
+          </svg></span></h1>
+      <p class="tagline">Setiap huruf adalah tanah yang diinjak — satu langkah kecil untuk masuk.</p>
+    </header>
+
+    <!-- KARTU LOGIN -->
+    <section class="card" id="card" aria-labelledby="cardTitle">
+      <!-- Form -->
+      <div class="view" id="formView">
+        <h2 id="cardTitle">Masuk ke akunmu</h2>
+        <p class="sub">Demo tampilan — HTML, CSS &amp; JS murni, tanpa framework.</p>
+
+        <form id="loginForm" novalidate>
+          <div class="field">
+            <label for="email">Email</label>
+            <div class="control">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="3"/><path d="m3 7 8.2 5.6a1.4 1.4 0 0 0 1.6 0L21 7"/></svg>
+              <input type="email" id="email" name="email" placeholder="nama@contoh.com" autocomplete="email" spellcheck="false" />
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="label-row">
+              <label for="password">Password</label>
+              <a href="#" id="forgot" class="mini-link">Lupa password?</a>
+            </div>
+            <div class="control">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10" rx="3"/><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"/><circle cx="12" cy="15.5" r="1.4" class="dot-fill"/></svg>
+              <input type="password" id="password" name="password" placeholder="Minimal 6 karakter" autocomplete="current-password" />
+              <button type="button" class="toggle-pass" id="togglePass" aria-label="Tampilkan password" aria-pressed="false">
+                <svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.6"/></svg>
+                <svg class="icon-eye-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4l16 16"/><path d="M9.9 5.2A9.8 9.8 0 0 1 12 5c6 0 9.5 7 9.5 7a17.6 17.6 0 0 1-2.4 3.3M6.1 6.8A16.9 16.9 0 0 0 2.5 12S6 19 12 19a9.4 9.4 0 0 0 4-.9"/><path d="M9.9 9.9a2.9 2.9 0 0 0 4.1 4.1"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <label class="remember">
+            <input type="checkbox" id="remember" checked />
+            <span>Ingat saya di perangkat ini</span>
+          </label>
+
+          <p class="form-error" id="formError" role="alert" aria-live="polite"></p>
+
+          <button class="btn-primary" id="btnLogin" type="submit">
+            <span class="btn-spinner" aria-hidden="true"></span>
+            <span class="btn-label">Masuk</span>
+            <span class="btn-arrow" aria-hidden="true">→</span>
+          </button>
+
+          <div class="divider" aria-hidden="true"><span>atau lanjut dengan</span></div>
+
+          <div class="socials">
+            <button type="button" class="btn-social" data-provider="Google">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M12 5.3c1.6 0 3 .55 4.1 1.63l3.06-3.06C17.3 2.15 14.87 1.2 12 1.2 7.7 1.2 4 3.64 2.2 7.24l3.57 2.77C6.63 7.2 9.08 5.3 12 5.3Z"/><path fill="#4285F4" d="M23.1 12.27c0-.93-.08-1.6-.26-2.3H12v4.36h6.34c-.13 1.08-.83 2.7-2.38 3.8l3.48 2.7c2.08-1.93 3.66-4.76 3.66-8.56Z"/><path fill="#FBBC05" d="M5.78 14.2a6.9 6.9 0 0 1 0-4.4L2.2 7.03a11.26 11.26 0 0 0 0 9.94l3.57-2.77Z"/><path fill="#34A853" d="M12 22.8c3.04 0 5.6-1 7.44-2.73l-3.48-2.7c-.93.65-2.18 1.1-3.96 1.1a6.14 6.14 0 0 1-5.78-4.27l-3.57 2.77C4.9 20.36 8.7 22.8 12 22.8Z"/></svg>
+              Google
+            </button>
+            <button type="button" class="btn-social" data-provider="GitHub">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1.5A10.5 10.5 0 0 0 8.68 22.04c.53.1.72-.23.72-.5v-1.96c-2.9.63-3.52-1.24-3.52-1.24-.48-1.2-1.16-1.53-1.16-1.53-.95-.65.07-.64.07-.64 1.05.08 1.6 1.08 1.6 1.08.93 1.6 2.44 1.14 3.04.87.09-.68.36-1.14.66-1.4-2.32-.27-4.76-1.16-4.76-5.16 0-1.14.4-2.07 1.07-2.8-.1-.26-.46-1.33.1-2.77 0 0 .88-.28 2.87 1.08a9.94 9.94 0 0 1 5.22 0c2-1.36 2.88-1.08 2.88-1.08.57 1.44.2 2.5.1 2.77.67.73 1.08 1.66 1.08 2.8 0 4.02-2.45 4.9-4.78 5.15.38.33.71.96.71 1.95v2.9c0 .28.2.6.73.5A10.5 10.5 0 0 0 12 1.5Z"/></svg>
+              GitHub
+            </button>
+          </div>
+        </form>
+
+        <p class="signup">Belum punya akun? <a href="#" id="signupLink">Daftar gratis</a></p>
+      </div>
+
+      <!-- Sukses -->
+      <div class="view hidden" id="successView">
+        <svg class="check" viewBox="0 0 52 52" aria-hidden="true">
+          <circle class="check-circle" cx="26" cy="26" r="23" />
+          <path class="check-mark" d="M15 27.2l7.4 7.4L37.5 19.8" />
+        </svg>
+        <h2>Halo, <span id="userName">Kawan</span>!</h2>
+        <p class="sub">Kamu berhasil masuk — dan si kaki-rata di atas sudah sampai lebih dulu. 🚶</p>
+        <button class="btn-primary" id="btnLogout" type="button">
+          <span class="btn-label">Keluar</span>
+        </button>
+      </div>
+    </section>
+
+    <footer class="foot">Dibuat dengan HTML • CSS • JS murni — manusia kecil berjalan tanpa lelah</footer>
+  </main>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
