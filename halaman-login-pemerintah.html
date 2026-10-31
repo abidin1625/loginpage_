@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Masuk &middot; Sistem Informasi Pemerintahan Terpadu &mdash; Pemerintah Republik Indonesia</title>
+<!--
+  ================================================================
+  HALAMAN LOGIN RESMI  (HTML + CSS murni, tanpa JavaScript)
+  ----------------------------------------------------------------
+  Cara kustomisasi:
+  1. Ganti nama instansi pada <title>, .brand-top, .mobile-brand, dan footer.
+  2. Ganti lambang: hapus <svg class="emblem"> lalu gunakan
+     <img class="emblem" src="logo-instansi.png" alt="Logo instansi">.
+  3. Ubah warna utama pada variabel :root di bawah ini.
+  4. Sambungkan form ke server: ubah action="#" pada tag <form>.
+  ================================================================
+-->
+<style>
+  :root{
+    --navy:#0a2342;        /* biru tua resmi */
+    --navy-2:#14406e;      /* biru sedang */
+    --navy-soft:#dbe6f5;   /* teks terang di panel biru */
+    --gold:#e8c15a;        /* aksen emas */
+    --red:#ce1126;         /* merah bendera */
+    --ink:#1a2433;         /* teks utama */
+    --muted:#5f6b7d;       /* teks sekunder */
+    --line:#c9d4e2;        /* garis batas */
+    --bg:#eef2f7;          /* latar halaman */
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  body{
+    font-family:"Segoe UI","Helvetica Neue",Arial,"Noto Sans",sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* Garis merah-putih di tepi atas halaman */
+  .flag-bar{
+    height:6px;
+    background:linear-gradient(180deg, var(--red) 0 50%, #ffffff 50% 100%);
+  }
+
+  .page{flex:1;display:flex}
+
+  /* ================= PANEL KIRI (IDENTITAS INSTANSI) ================= */
+  .hero{
+    flex:0 0 46%;
+    max-width:720px;
+    background:
+      radial-gradient(900px 520px at -8% -12%, rgba(232,193,90,.14), transparent 55%),
+      linear-gradient(150deg, var(--navy) 0%, var(--navy-2) 100%);
+    color:#fff;
+    padding:60px 54px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    gap:44px;
+  }
+
+  .brand{display:flex;gap:22px;align-items:flex-start}
+  .emblem{flex:0 0 auto}
+
+  .brand-top{
+    font-size:12px;
+    letter-spacing:.32em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:600;
+    margin-bottom:12px;
+  }
+
+  .hero h1{
+    font-size:clamp(26px, 2.6vw, 34px);
+    line-height:1.25;
+    font-weight:700;
+  }
+
+  .brand-sub{
+    margin-top:14px;
+    color:var(--navy-soft);
+    font-size:15px;
+    line-height:1.65;
+    max-width:40ch;
+  }
+
+  .values{list-style:none;display:flex;flex-direction:column;gap:16px}
+  .values li{
+    display:flex;gap:12px;align-items:flex-start;
+    font-size:14.5px;line-height:1.6;color:var(--navy-soft);
+    max-width:52ch;
+  }
+  .values svg{flex:0 0 auto;margin-top:3px}
+  .values strong{color:#fff;font-weight:600}
+
+  .hero-foot{
+    border-top:1px solid rgba(255,255,255,.18);
+    padding-top:20px;
+    font-size:13px;
+    color:#9fb3cc;
+    line-height:1.7;
+  }
+  .hero-foot strong{color:#fff}
+
+  /* ================= PANEL KANAN (FORM LOGIN) ================= */
+  .panel{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:56px 24px;
+    gap:18px;
+  }
+
+  .card{
+    width:100%;
+    max-width:432px;
+    background:#fff;
+    border:1px solid #d5deea;
+    border-top:4px solid var(--navy);
+    border-radius:10px;
+    padding:42px 40px 36px;
+    box-shadow:0 14px 34px rgba(10,35,66,.10);
+  }
+
+  .overline{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:11px;font-weight:700;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--navy-2);
+  }
+  .overline::before{content:"";width:22px;height:2px;background:var(--gold)}
+
+  .card h2{font-size:23px;color:var(--navy);margin:10px 0 8px}
+
+  .desc{
+    font-size:14px;color:var(--muted);
+    line-height:1.6;margin-bottom:26px;
+  }
+
+  .field{margin-bottom:18px}
+
+  .field label{
+    display:block;
+    font-size:11.5px;font-weight:700;letter-spacing:.08em;
+    text-transform:uppercase;color:#3b4a63;margin-bottom:7px;
+  }
+
+  input[type="text"],
+  input[type="password"]{
+    width:100%;
+    padding:12px 14px;
+    font-size:15px;
+    font-family:inherit;
+    color:var(--ink);
+    background:#fbfcfe;
+    border:1px solid var(--line);
+    border-radius:7px;
+    transition:border-color .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  input::placeholder{color:#94a3b8}
+  input:focus{
+    outline:none;
+    border-color:#2c62a8;
+    box-shadow:0 0 0 3px rgba(44,98,168,.15);
+    background:#fff;
+  }
+
+  .row{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:10px;flex-wrap:wrap;
+    margin:4px 0 22px;font-size:13px;
+  }
+  .remember{display:flex;align-items:center;gap:8px;color:var(--muted);cursor:pointer}
+  .remember input{width:15px;height:15px;accent-color:var(--navy);cursor:pointer}
+
+  .link{color:var(--navy-2);text-decoration:none;font-weight:600}
+  .link:hover{text-decoration:underline}
+
+  .btn{
+    width:100%;
+    padding:14px 16px;
+    background:var(--navy);
+    color:#fff;
+    border:1px solid var(--navy);
+    border-radius:7px;
+    font-size:13.5px;
+    font-weight:700;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    font-family:inherit;
+    cursor:pointer;
+    transition:background .2s ease;
+  }
+  .btn:hover{background:var(--navy-2)}
+  .btn:active{transform:translateY(1px)}
+
+  .btn:focus-visible,
+  .btn-outline:focus-visible,
+  .link:focus-visible{
+    outline:3px solid rgba(44,98,168,.35);
+    outline-offset:2px;
+  }
+
+  .secure{
+    display:flex;gap:8px;align-items:center;justify-content:center;
+    margin-top:16px;font-size:12px;color:var(--muted);
+  }
+  .secure svg{flex:0 0 auto}
+
+  .divider{
+    display:flex;align-items:center;gap:12px;
+    margin:24px 0 18px;
+    color:#93a1b5;font-size:11px;
+    text-transform:uppercase;letter-spacing:.16em;
+  }
+  .divider::before,.divider::after{content:"";flex:1;height:1px;background:#e1e7f0}
+
+  .btn-outline{
+    display:block;text-align:center;
+    padding:12px 16px;
+    border:1px solid var(--line);
+    border-radius:7px;
+    color:var(--navy-2);
+    font-weight:600;font-size:13.5px;
+    text-decoration:none;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .btn-outline:hover{border-color:var(--navy-2);background:#f6f9fd}
+
+  .legal{
+    max-width:432px;
+    font-size:11.5px;line-height:1.7;
+    color:#6b7686;text-align:center;
+  }
+  .legal strong{color:#4a5568}
+
+  /* ================= FOOTER ================= */
+  .foot{
+    background:var(--navy);
+    color:#b9c6d8;
+    font-size:12.5px;
+    padding:16px 32px;
+    display:flex;justify-content:space-between;align-items:center;
+    gap:12px;flex-wrap:wrap;
+  }
+  .foot a{color:#dbe6f5;text-decoration:none;margin-left:18px}
+  .foot a:hover{color:#fff;text-decoration:underline}
+
+  /* ================= VERSI MOBILE ================= */
+  .mobile-brand{display:none}
+
+  @media (max-width:920px){
+    .hero{display:none}
+    .mobile-brand{
+      display:flex;flex-direction:column;align-items:center;
+      gap:8px;margin-bottom:24px;text-align:center;
+    }
+    .mobile-brand .brand-top{margin-bottom:2px;color:var(--navy-2)}
+    .mobile-brand h1{font-size:17px;color:var(--navy);max-width:32ch}
+    .panel{padding:40px 20px}
+    .card{padding:32px 24px 28px}
+    .foot{justify-content:center;text-align:center}
+    .foot a{margin:0 9px}
+  }
+</style>
+</head>
+<body>
+
+  <div class="flag-bar"></div>
+
+  <div class="page">
+
+    <!-- ============ PANEL IDENTITAS (KIRI) ============ -->
+    <aside class="hero">
+      <div class="brand">
+
+        <!-- Ganti SVG ini dengan <img src="logo-instansi.png"> bila sudah punya logo -->
+        <svg class="emblem" width="76" height="76" viewBox="0 0 64 64" role="img" aria-label="Lambang instansi">
+          <circle cx="32" cy="32" r="30" fill="rgba(255,255,255,.05)" stroke="#e8c15a" stroke-width="2"/>
+          <circle cx="32" cy="32" r="24" fill="none" stroke="rgba(232,193,90,.45)" stroke-width="1"/>
+          <path d="M32 17 L35.2 25.6 L44.4 26 L37.2 31.7 L39.6 40.5 L32 35.5 L24.4 40.5 L26.8 31.7 L19.6 26 L28.8 25.6 Z" fill="#e8c15a"/>
+          <path d="M22 47h20" stroke="#e8c15a" stroke-width="1.5" stroke-linecap="round" opacity=".7"/>
+        </svg>
+
+        <div>
+          <p class="brand-top">Pemerintah Republik Indonesia</p>
+          <h1>Sistem Informasi Pemerintahan Terpadu</h1>
+          <p class="brand-sub">Gerbang tunggal layanan digital instansi pemerintah. Satu akun untuk seluruh aplikasi resmi yang Anda miliki wewenangnya.</p>
+        </div>
+      </div>
+
+      <ul class="values">
+        <li>
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="10" cy="10" r="9" stroke="#e8c15a" stroke-width="1.5"/>
+            <path d="M6 10.2l2.6 2.6L14 7.4" stroke="#e8c15a" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span><strong>Amanah</strong> &mdash; melayani dengan integritas, penuh tanggung jawab, dan menjaga kepercayaan publik.</span>
+        </li>
+        <li>
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="10" cy="10" r="9" stroke="#e8c15a" stroke-width="1.5"/>
+            <path d="M6 10.2l2.6 2.6L14 7.4" stroke="#e8c15a" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span><strong>Transparan</strong> &mdash; setiap proses layanan terdokumentasi dan dapat dipertanggungjawabkan.</span>
+        </li>
+        <li>
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="10" cy="10" r="9" stroke="#e8c15a" stroke-width="1.5"/>
+            <path d="M6 10.2l2.6 2.6L14 7.4" stroke="#e8c15a" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span><strong>Akuntabel</strong> &mdash; seluruh aktivitas akses tercatat sesuai ketentuan keamanan informasi.</span>
+        </li>
+      </ul>
+
+      <div class="hero-foot">
+        <p>Butuh bantuan? Helpdesk nasional <strong>1400</strong> &middot; helpdesk@pemerintahan.go.id<br>Jam layanan: Senin&ndash;Jumat, pukul 08.00&ndash;16.00 WIB</p>
+      </div>
+    </aside>
+
+    <!-- ============ PANEL FORM (KANAN) ============ -->
+    <main class="panel">
+
+      <div class="mobile-brand">
+        <svg class="emblem" width="46" height="46" viewBox="0 0 64 64" role="img" aria-label="Lambang instansi">
+          <circle cx="32" cy="32" r="30" fill="rgba(10,35,66,.05)" stroke="#c9a227" stroke-width="2.5"/>
+          <path d="M32 17 L35.2 25.6 L44.4 26 L37.2 31.7 L39.6 40.5 L32 35.5 L24.4 40.5 L26.8 31.7 L19.6 26 L28.8 25.6 Z" fill="#c9a227"/>
+        </svg>
+        <p class="brand-top">Pemerintah Republik Indonesia</p>
+        <h1>Sistem Informasi Pemerintahan Terpadu</h1>
+      </div>
+
+      <section class="card">
+        <span class="overline">Portal Resmi</span>
+        <h2>Masuk ke Akun Anda</h2>
+        <p class="desc">Gunakan NIK dan kata sandi resmi yang telah diberikan oleh administrator instansi Anda.</p>
+
+        <!-- Ubah action="#" sesuai endpoint server Anda -->
+        <form action="#" method="post">
+
+          <div class="field">
+            <label for="nik">NIK / Nama Pengguna</label>
+            <input id="nik" name="nik" type="text" autocomplete="username"
+                   placeholder="Masukkan NIK (16 digit) atau nama pengguna" required>
+          </div>
+
+          <div class="field">
+            <label for="sandi">Kata Sandi</label>
+            <input id="sandi" name="password" type="password" autocomplete="current-password"
+                   placeholder="Masukkan kata sandi" required>
+          </div>
+
+          <div class="row">
+            <label class="remember"><input type="checkbox" name="ingat"> Ingat saya di perangkat ini</label>
+            <a href="#" class="link">Lupa kata sandi?</a>
+          </div>
+
+          <button type="submit" class="btn">Masuk ke Sistem</button>
+
+          <p class="secure">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <rect x="3" y="7" width="10" height="7" rx="1.5" fill="#7a8aa0"/>
+              <path d="M5.5 7V5.2a2.5 2.5 0 0 1 5 0V7" stroke="#7a8aa0" stroke-width="1.6" fill="none"/>
+            </svg>
+            <span>Koneksi terenkripsi &mdash; pastikan alamat situs berakhiran <strong>.go.id</strong></span>
+          </p>
+
+        </form>
+
+        <div class="divider"><span>atau</span></div>
+        <a href="#" class="btn-outline">Ajukan akun baru melalui admin instansi</a>
+      </section>
+
+      <p class="legal">
+        <strong>Peringatan keamanan:</strong> seluruh aktivitas pengguna dalam sistem ini dicatat dan dipantau oleh administrator.
+        Akses tanpa izin merupakan pelanggaran hukum dan dapat dijerat berdasarkan peraturan perundang-undangan yang berlaku,
+        termasuk Undang-Undang Nomor 1 Tahun 2024 tentang Perubahan Kedua atas Undang-Undang Informasi dan Transaksi Elektronik.
+      </p>
+
+    </main>
+  </div>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="foot">
+    <p>&copy; 2026 Pemerintah Republik Indonesia &mdash; Hak Cipta Dilindungi Undang-Undang</p>
+    <nav>
+      <a href="#">Kebijakan Privasi</a>
+      <a href="#">Syarat &amp; Ketentuan</a>
+      <a href="#">Panduan Pengguna</a>
+    </nav>
+  </footer>
+
+</body>
+</html>
