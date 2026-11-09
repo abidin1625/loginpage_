@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clover Club — Login</title>
+<meta name="description" content="Clover Club login screen — HTML, CSS & JS in a single file.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232B6159'/%3E%3Cg fill='%23fff'%3E%3Ccircle cx='32' cy='23' r='9'/%3E%3Ccircle cx='32' cy='41' r='9'/%3E%3Ccircle cx='23' cy='32' r='9'/%3E%3Ccircle cx='41' cy='32' r='9'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   CLOVER CLUB — Login (single file: HTML + CSS + JS)
+   Palet diambil dari desain referensi:
+   sage #C0D8D0 · hijau #286058 · daun #5E9C85 · border #B9C8C2
+   ============================================================ */
+:root{
+  --sage:        #C0D8D0;
+  --green:       #2B6159;   /* hijau utama */
+  --green-deep:  #286058;   /* splash & tombol */
+  --green-hover: #1F544C;
+  --label:       #337062;
+  --leaf:        #5E9C85;
+  --border:      #B9C8C2;
+  --eye:         #79A893;
+  --ink:         #23433D;
+  --err:         #C4554D;
+  --wm:          rgba(255,255,255,.055); /* watermark clover */
+}
+*{ margin:0; padding:0; box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  font-family:'Poppins','Segoe UI',system-ui,-apple-system,sans-serif;
+  background:radial-gradient(140% 120% at 50% 0%, #C6DBD3 0%, var(--sage) 55%, #B7D0C7 100%);
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- SVG defs tersembunyi (logo & fern reusable) ---------- */
+.svg-defs{ position:absolute; width:0; height:0; overflow:hidden; }
+
+/* ============ SPLASH SCREEN (pembuka, ala mockup kiri) ============ */
+.splash{
+  position:fixed; inset:0; z-index:100; overflow:hidden;
+  display:grid; place-items:center; cursor:pointer;
+  background:radial-gradient(120% 95% at 32% 34%, #2F685F 0%, var(--green-deep) 58%, #235649 100%);
+  transition:opacity .7s ease, visibility .7s;
+}
+.splash.hide{ opacity:0; visibility:hidden; }
+.splash .wm{ position:absolute; width:min(64vh,480px); left:max(-14vh,-120px); top:20%; color:var(--wm); animation:drift 10s ease-in-out infinite alternate; }
+.splash .brand{ position:relative; display:flex; flex-direction:column; align-items:center; gap:22px; animation:pop .9s cubic-bezier(.2,.8,.3,1) both; }
+.splash .brand svg{ width:min(23vw,96px); color:#fff; }
+.splash .brand span{ color:#fff; font-size:clamp(24px,4.5vw,31px); font-weight:600; letter-spacing:1px; }
+.splash .fern{ color:var(--leaf); }
+.splash .fern svg{ width:100%; height:auto; display:block; overflow:visible; animation:sway 7s ease-in-out infinite alternate; }
+.splash .fern.f1{ position:absolute; width:min(48vw,430px); right:-7vw; bottom:-9vh; transform:scaleX(-1) rotate(9deg); }
+.splash .fern.f2{ position:absolute; width:min(26vw,225px); right:27vw; bottom:-7vh; transform:scaleX(-1) rotate(24deg); }
+.splash .fern.f2 svg{ animation-duration:8.5s; animation-delay:-2s; }
+@keyframes pop{ from{ opacity:0; transform:scale(.88); } to{ opacity:1; transform:none; } }
+@keyframes drift{ from{ transform:translateY(-10px); } to{ transform:translateY(12px); } }
+@keyframes sway{ from{ transform:rotate(-1.3deg); } to{ transform:rotate(1.5deg); } }
+
+/* ============ SCENE & PHONE CARD (mockup kanan) ============ */
+.scene{ min-height:100dvh; display:grid; place-items:center; padding:24px; }
+.phone{
+  width:min(404px,100%); height:min(846px,calc(100dvh - 32px));
+  background:#fff; border-radius:30px; overflow:hidden;
+  box-shadow:0 34px 90px -22px rgba(21,56,47,.5), 0 10px 28px -12px rgba(21,56,47,.28);
+  display:flex; flex-direction:column;
+  opacity:0; transform:translateY(26px) scale(.98);
+  transition:opacity .7s ease .05s, transform .7s cubic-bezier(.2,.8,.3,1) .05s;
+}
+body.ready .phone{ opacity:1; transform:none; }
+
+/* ---------- Hero hijau ---------- */
+.hero{
+  position:relative; flex:0 0 47.5%; overflow:hidden; color:#fff;
+  background:linear-gradient(165deg,#336D62 0%, #2B6159 55%, #275D54 100%);
+  padding:62px 30px 0;
+}
+.hero .wm{ position:absolute; width:400px; right:-58px; top:-28px; color:var(--wm); animation:drift 11s ease-in-out infinite alternate; }
+.hero-logo{ position:relative; width:44px; color:#fff; }
+.hero h1{ position:relative; margin-top:32px; font-size:30px; font-weight:600; letter-spacing:.3px; }
+.hero .sub{ position:relative; margin-top:7px; font-size:15.5px; font-weight:400; color:rgba(255,255,255,.92); }
+.hero .ferns{ position:absolute; inset:auto 0 0 auto; width:60%; height:46%; pointer-events:none; }
+.hero .fern{ position:absolute; color:var(--leaf); }
+.hero .fern svg{ width:100%; height:auto; display:block; overflow:visible; animation:sway 8s ease-in-out infinite alternate; }
+.hero .fern.f1{ width:225px; right:-42px; bottom:-34px; transform:rotate(-7deg); }
+.hero .fern.f2{ width:132px; right:172px; bottom:-40px; transform:scaleX(-1) rotate(-16deg); }
+.hero .fern.f2 svg{ animation-duration:9.5s; animation-delay:-3s; }
+
+/* ---------- Form ---------- */
+.form{ flex:1; overflow-y:auto; padding:32px 28px 26px; }
+.reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s ease var(--d,0s), transform .6s ease var(--d,0s); }
+body.ready .reveal{ opacity:1; transform:none; }
+
+.field{ margin-bottom:18px; }
+.field label{ display:block; font-size:15px; font-weight:500; color:var(--label); margin-bottom:9px; }
+.field input{
+  width:100%; height:49px; padding:0 14px;
+  font:inherit; font-size:15px; color:var(--ink);
+  background:#fff; border:1.5px solid var(--border); border-radius:10px; outline:none;
+  transition:border-color .2s, box-shadow .2s;
+}
+.field input:hover{ border-color:#9DB3AB; }
+.field input:focus{ border-color:var(--green); box-shadow:0 0 0 3.5px rgba(43,97,89,.14); }
+.pass-wrap{ position:relative; }
+.pass-wrap input{ padding-right:50px; }
+.eye{
+  position:absolute; top:50%; right:7px; transform:translateY(-50%);
+  width:36px; height:36px; display:grid; place-items:center;
+  background:none; border:none; border-radius:8px; cursor:pointer; color:var(--eye);
+  transition:color .2s, background-color .2s;
+}
+.eye:hover{ color:#4E8371; background:rgba(43,97,89,.07); }
+.eye.active{ color:var(--green); }
+.eye svg{ width:21px; height:21px; }
+.hidden{ display:none !important; }
+
+.err-msg{ display:none; margin-top:7px; font-size:12.5px; color:var(--err); }
+.field.error input{ border-color:var(--err); box-shadow:0 0 0 3.5px rgba(196,85,77,.12); }
+.field.error .err-msg{ display:block; }
+.field.error{ animation:shake .4s ease; }
+@keyframes shake{ 20%{ transform:translateX(-6px);} 45%{ transform:translateX(5px);} 70%{ transform:translateX(-3px);} 100%{ transform:none;} }
+
+.login-btn{
+  position:relative; width:100%; height:53px; margin-top:10px;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  font:inherit; font-size:16.5px; font-weight:500; letter-spacing:.25px; color:#fff;
+  background:var(--green-deep); border:none; border-radius:10px; cursor:pointer;
+  transition:background-color .2s, transform .15s, box-shadow .2s;
+}
+.login-btn:hover{ background:var(--green-hover); box-shadow:0 10px 22px -10px rgba(21,56,47,.55); transform:translateY(-1px); }
+.login-btn:active{ transform:translateY(0) scale(.985); }
+.login-btn:disabled{ cursor:default; }
+.spinner{ width:18px; height:18px; border:2.5px solid rgba(255,255,255,.35); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; display:none; }
+@keyframes spin{ to{ transform:rotate(360deg); } }
+.login-btn.loading{ pointer-events:none; background:var(--green-hover); }
+.login-btn.loading .spinner{ display:block; }
+.login-btn.success{ pointer-events:none; background:#2E7D5F; }
+.check{ width:19px; height:19px; display:none; }
+.login-btn.success .check{ display:block; animation:pop .35s cubic-bezier(.2,.8,.3,1) both; }
+
+.links{ display:flex; justify-content:space-between; align-items:center; margin-top:34px; }
+.links a{
+  font-size:15px; font-weight:500; color:var(--label);
+  text-decoration:underline; text-underline-offset:4px; text-decoration-thickness:1.5px;
+  transition:color .2s;
+}
+.links a:hover{ color:var(--green-hover); }
+
+/* ---------- Toast ---------- */
+.toast{
+  position:fixed; left:50%; bottom:26px; z-index:200;
+  transform:translate(-50%,16px); opacity:0; pointer-events:none;
+  max-width:min(88vw,420px); text-align:center;
+  background:#1E4A42; color:#fff; font-size:14px; line-height:1.45;
+  padding:12px 22px; border-radius:999px;
+  box-shadow:0 14px 34px -10px rgba(16,45,38,.55);
+  transition:opacity .35s ease, transform .35s ease;
+}
+.toast.show{ opacity:1; transform:translate(-50%,0); }
+
+/* ---------- Responsif ---------- */
+@media (max-width:460px){
+  .scene{ padding:0; }
+  .phone{ width:100%; height:100dvh; border-radius:0; box-shadow:none; }
+}
+@media (max-height:700px){
+  .hero{ padding-top:44px; }
+  .hero h1{ margin-top:22px; font-size:27px; }
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation:none !important; transition:none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- Aset SVG reusable: logo clover (4 kelopak hati) & daun fern -->
+<svg class="svg-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <g id="cloverG" fill="currentColor">
+      <path d="M0 0 C-27 -19 -25 -41 -12 -41 C-5 -41 0 -35 0 -29 C0 -35 5 -41 12 -41 C25 -41 27 -19 0 0 Z" transform="translate(60 54)"/>
+      <path d="M0 0 C-27 -19 -25 -41 -12 -41 C-5 -41 0 -35 0 -29 C0 -35 5 -41 12 -41 C25 -41 27 -19 0 0 Z" transform="translate(60 66) rotate(180)"/>
+      <path d="M0 0 C-27 -19 -25 -41 -12 -41 C-5 -41 0 -35 0 -29 C0 -35 5 -41 12 -41 C25 -41 27 -19 0 0 Z" transform="translate(54 60) rotate(-90)"/>
+      <path d="M0 0 C-27 -19 -25 -41 -12 -41 C-5 -41 0 -35 0 -29 C0 -35 5 -41 12 -41 C25 -41 27 -19 0 0 Z" transform="translate(66 60) rotate(90)"/>
+    </g>
+    <g id="fernG">
+      <path d="M0 0 Q 26 -120 130 -210" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round"/>
+      <ellipse rx="19.1" ry="11.5" transform="translate(4.0 -16.7) rotate(-133) translate(18.4 0)" fill="currentColor"/>
+      <ellipse rx="19.1" ry="11.5" transform="translate(4.0 -16.7) rotate(-17) translate(18.4 0)" fill="currentColor"/>
+      <ellipse rx="17.9" ry="10.8" transform="translate(10.9 -39.4) rotate(-129) translate(17.2 0)" fill="currentColor"/>
+      <ellipse rx="17.9" ry="10.8" transform="translate(10.9 -39.4) rotate(-13) translate(17.2 0)" fill="currentColor"/>
+      <ellipse rx="16.7" ry="10.0" transform="translate(19.3 -61.6) rotate(-125) translate(16.0 0)" fill="currentColor"/>
+      <ellipse rx="16.7" ry="10.0" transform="translate(19.3 -61.6) rotate(-9) translate(16.0 0)" fill="currentColor"/>
+      <ellipse rx="15.5" ry="9.3" transform="translate(29.2 -83.2) rotate(-122) translate(14.9 0)" fill="currentColor"/>
+      <ellipse rx="15.5" ry="9.3" transform="translate(29.2 -83.2) rotate(-6) translate(14.9 0)" fill="currentColor"/>
+      <ellipse rx="14.3" ry="8.6" transform="translate(40.6 -104.3) rotate(-118) translate(13.7 0)" fill="currentColor"/>
+      <ellipse rx="14.3" ry="8.6" transform="translate(40.6 -104.3) rotate(-2) translate(13.7 0)" fill="currentColor"/>
+      <ellipse rx="13.1" ry="7.8" transform="translate(53.4 -124.8) rotate(-114) translate(12.5 0)" fill="currentColor"/>
+      <ellipse rx="13.1" ry="7.8" transform="translate(53.4 -124.8) rotate(2) translate(12.5 0)" fill="currentColor"/>
+      <ellipse rx="11.9" ry="7.1" transform="translate(67.8 -144.7) rotate(-110) translate(11.4 0)" fill="currentColor"/>
+      <ellipse rx="11.9" ry="7.1" transform="translate(67.8 -144.7) rotate(6) translate(11.4 0)" fill="currentColor"/>
+      <ellipse rx="10.6" ry="6.4" transform="translate(83.6 -164.0) rotate(-107) translate(10.2 0)" fill="currentColor"/>
+      <ellipse rx="10.6" ry="6.4" transform="translate(83.6 -164.0) rotate(9) translate(10.2 0)" fill="currentColor"/>
+      <ellipse rx="9.4" ry="5.7" transform="translate(101.0 -182.7) rotate(-104) translate(9.1 0)" fill="currentColor"/>
+      <ellipse rx="9.4" ry="5.7" transform="translate(101.0 -182.7) rotate(12) translate(9.1 0)" fill="currentColor"/>
+      <ellipse rx="8.2" ry="4.9" transform="translate(119.8 -200.9) rotate(-100) translate(7.9 0)" fill="currentColor"/>
+      <ellipse rx="8.2" ry="4.9" transform="translate(119.8 -200.9) rotate(16) translate(7.9 0)" fill="currentColor"/>
+      <ellipse rx="8.0" ry="4.8" transform="translate(127.9 -208.2) rotate(-41) translate(8.0 0)" fill="currentColor"/>
+      <circle cx="119.7" cy="-184.7" r="5.0" fill="currentColor"/>
+      <circle cx="113.6" cy="-213.2" r="5.6" fill="currentColor"/>
+      <circle cx="98.8" cy="-194.0" r="4.0" fill="currentColor"/>
+    </g>
+  </defs>
+</svg>
+
+<!-- ============ SPLASH (mockup kiri) ============ -->
+<div class="splash" id="splash" title="Klik untuk melewati">
+  <svg class="wm" viewBox="0 0 120 120" aria-hidden="true"><use href="#cloverG"/></svg>
+  <div class="brand">
+    <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#cloverG"/></svg>
+    <span>Clover Club</span>
+  </div>
+  <div class="fern f1"><svg viewBox="-52 -252 240 272" aria-hidden="true"><use href="#fernG"/></svg></div>
+  <div class="fern f2"><svg viewBox="-52 -252 240 272" aria-hidden="true"><use href="#fernG"/></svg></div>
+</div>
+
+<!-- ============ LOGIN (mockup kanan) ============ -->
+<main class="scene">
+  <div class="phone">
+    <header class="hero">
+      <svg class="wm" viewBox="0 0 120 120" aria-hidden="true"><use href="#cloverG"/></svg>
+      <svg class="hero-logo reveal" style="--d:.05s" viewBox="0 0 120 120" aria-hidden="true"><use href="#cloverG"/></svg>
+      <h1 class="reveal" style="--d:.12s">Welcome</h1>
+      <p class="sub reveal" style="--d:.18s">Sign in to continue</p>
+      <div class="ferns" aria-hidden="true">
+        <div class="fern f1"><svg viewBox="-52 -252 240 272"><use href="#fernG"/></svg></div>
+        <div class="fern f2"><svg viewBox="-52 -252 240 272"><use href="#fernG"/></svg></div>
+      </div>
+    </header>
+
+    <form class="form" id="loginForm" novalidate>
+      <div class="field reveal" style="--d:.26s" id="fieldEmail">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" autocomplete="email" spellcheck="false">
+        <p class="err-msg" id="emailErr"></p>
+      </div>
+
+      <div class="field reveal" style="--d:.33s" id="fieldPass">
+        <label for="password">Password</label>
+        <div class="pass-wrap">
+          <input type="password" id="password" name="password" autocomplete="current-password">
+          <button type="button" class="eye" id="togglePass" aria-label="Show password">
+            <svg id="iconEye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12Z"/>
+              <circle cx="12" cy="12" r="2.7"/>
+            </svg>
+            <svg id="iconEyeOff" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10.6 5.7A9.8 9.8 0 0 1 12 5.5c6.5 0 10 6.5 10 6.5a17.6 17.6 0 0 1-3.2 4.1M14.1 14.1a3 3 0 1 1-4.2-4.2"/>
+              <path d="M6.6 6.6C3.8 8.5 2 12 2 12s3.5 6.5 10 6.5c1.5 0 2.9-.3 4.1-.9"/>
+              <path d="m3 3 18 18"/>
+            </svg>
+          </button>
+        </div>
+        <p class="err-msg" id="passErr"></p>
+      </div>
+
+      <div class="reveal" style="--d:.40s">
+        <button class="login-btn" id="loginBtn" type="submit">
+          <span class="spinner" aria-hidden="true"></span>
+          <svg class="check" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg>
+          <span class="btn-text" id="btnText">Login</span>
+        </button>
+      </div>
+
+      <div class="links reveal" style="--d:.47s">
+        <a href="#" id="signupLink">Sign up</a>
+        <a href="#" id="forgotLink">Forgot Password</a>
+      </div>
+    </form>
+  </div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ================= CLOVER CLUB — interaksi (vanilla JS) ================= */
+(function(){
+  'use strict';
+  const $ = s => document.querySelector(s);
+
+  /* ---- 1. Splash: tampil 2.2 detik, bisa diklik untuk lewati ---- */
+  const splash = $('#splash');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let splashTimer = setTimeout(hideSplash, reduceMotion ? 0 : 2200);
+  function hideSplash(){
+    if (!splash || splash.classList.contains('hide')) return;
+    clearTimeout(splashTimer);
+    splash.classList.add('hide');
+    document.body.classList.add('ready');           // memicu animasi masuk kartu login
+    setTimeout(() => splash.remove(), 750);
+  }
+  splash.addEventListener('click', hideSplash);
+
+  /* ---- 2. Toggle lihat/sembunyikan password ---- */
+  const passInput = $('#password'), eyeBtn = $('#togglePass');
+  const iconEye = $('#iconEye'), iconEyeOff = $('#iconEyeOff');
+  eyeBtn.addEventListener('click', () => {
+    const show = passInput.type === 'password';
+    passInput.type = show ? 'text' : 'password';
+    iconEye.classList.toggle('hidden', show);
+    iconEyeOff.classList.toggle('hidden', !show);
+    eyeBtn.classList.toggle('active', show);
+    eyeBtn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+    passInput.focus({ preventScroll:true });
+  });
+
+  /* ---- 3. Validasi form + simulasi login ---- */
+  const form = $('#loginForm'), email = $('#email'), btn = $('#loginBtn'), btnText = $('#btnText');
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  function setError(fieldId, errId, msg){
+    $('#'+fieldId).classList.remove('error');
+    void $('#'+fieldId).offsetWidth;                // restart animasi shake
+    $('#'+fieldId).classList.add('error');
+    $('#'+errId).textContent = msg;
+  }
+  function clearError(fieldId){ $('#'+fieldId).classList.remove('error'); }
+  email.addEventListener('input', () => clearError('fieldEmail'));
+  passInput.addEventListener('input', () => clearError('fieldPass'));
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    let ok = true;
+    const em = email.value.trim(), pw = passInput.value;
+    if (!em){ setError('fieldEmail','emailErr','Email address is required.'); ok = false; }
+    else if (!EMAIL_RE.test(em)){ setError('fieldEmail','emailErr','Please enter a valid email address.'); ok = false; }
+    if (!pw){ setError('fieldPass','passErr','Password is required.'); ok = false; }
+    else if (pw.length < 6){ setError('fieldPass','passErr','Password must be at least 6 characters.'); ok = false; }
+    if (!ok) return;
+
+    btn.disabled = true;
+    btn.classList.add('loading');
+    btnText.textContent = 'Signing in…';
+    setTimeout(() => {
+      btn.classList.remove('loading');
+      btn.classList.add('success');
+      btnText.textContent = 'Success!';
+      toast('Welcome back! You have signed in successfully.');
+      setTimeout(() => {
+        btn.classList.remove('success');
+        btn.disabled = false;
+        btnText.textContent = 'Login';
+      }, 1900);
+    }, 1500);
+  });
+
+  /* ---- 4. Toast sederhana ---- */
+  let toastTimer;
+  function toast(msg){
+    const t = $('#toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+  }
+
+  /* ---- 5. Link Sign up & Forgot Password (demo) ---- */
+  $('#signupLink').addEventListener('click', e => {
+    e.preventDefault();
+    toast('Sign up is not available in this demo yet.');
+  });
+  $('#forgotLink').addEventListener('click', e => {
+    e.preventDefault();
+    toast('A password reset link would be sent to your email.');
+  });
+})();
+</script>
+</body>
+</html>
